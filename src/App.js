@@ -1,24 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
+import "./App.css";
+import WebApp from './components/pages/WebApp';
+import LoginForm from './components/loginform';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import { useAuth } from './components/context/AuthContext';
+import * as ROUTES from "./components/constants/routes";
+
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  const { isLoading } = useAuth();
+  return isLoading ? (
+    <h1>hold on, loading...</h1>
+  ) : (
+    <Router>
+      <Switch>
+        <Route path={ROUTES.LOGIN} component={LoginForm} />
+        <PrivateRoute path={ROUTES.WEB_APP}>
+          <WebApp />
+        </PrivateRoute>
+      </Switch>
+    </Router>
   );
 }
 
